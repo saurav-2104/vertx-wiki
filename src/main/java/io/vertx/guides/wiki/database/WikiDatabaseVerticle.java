@@ -42,6 +42,7 @@ public class WikiDatabaseVerticle extends AbstractVerticle {
     sqlQueries.put(SqlQuery.CREATE_PAGE, queriesProps.getProperty("create-page"));
     sqlQueries.put(SqlQuery.SAVE_PAGE, queriesProps.getProperty("save-page"));
     sqlQueries.put(SqlQuery.DELETE_PAGE, queriesProps.getProperty("delete-page"));
+    sqlQueries.put(SqlQuery.ALL_PAGES_DATA, queriesProps.getProperty("all-pages-data"));
     return sqlQueries;
   }
 
@@ -54,7 +55,7 @@ public class WikiDatabaseVerticle extends AbstractVerticle {
       .put("max_pool_size", config().getInteger(CONFIG_WIKIDB_JDBC_MAX_POOL_SIZE, 30)));
 
     WikiDatabaseService.create(dbClient, sqlQueries, ready -> {
-      if(ready.succeeded()){
+      if (ready.succeeded()) {
         ServiceBinder binder = new ServiceBinder(vertx);
         binder
           .setAddress(CONFIG_WIKIDB_QUEUE)
